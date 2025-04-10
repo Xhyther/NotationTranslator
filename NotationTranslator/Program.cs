@@ -1,4 +1,6 @@
-﻿namespace NotationTranslator
+﻿using System.CommandLine;
+
+namespace NotationTranslator
 {
     internal class Program
     {
