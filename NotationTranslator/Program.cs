@@ -17,9 +17,8 @@ namespace NotationTranslator
             var fromOption = new Option<Notation>
                 (
                 name: "--from",
-                description: "C",
-                getDefaultValue: () => Notation.infix
-                );
+                description: "C"
+                ){IsRequired = true};
 
             //Aliases for the from option
             fromOption.AddAlias("--f");
@@ -53,7 +52,7 @@ namespace NotationTranslator
             };
 
 
-
+            //The rootCommand
             var rootCommand = new RootCommand("Notation Translator")
             {
                 convertCommand
