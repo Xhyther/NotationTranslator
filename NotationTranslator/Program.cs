@@ -1,6 +1,4 @@
 ﻿using System.CommandLine;
-using System.CommandLine.Builder;
-using System.CommandLine.Help;
 using System.CommandLine.Parsing;
 
 
@@ -61,6 +59,8 @@ namespace NotationTranslator
             convertCommand.SetHandler((Notation from, Notation to, string expr) =>
             {
                 Console.WriteLine($"Convert {expr} from {from} to {to}");
+                Tokenizer.getArgument(expr);
+                Tokenizer.printArgs();
 
             },fromOption, toOption, expressionArg);
 
