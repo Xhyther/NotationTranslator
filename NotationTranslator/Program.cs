@@ -31,6 +31,10 @@ namespace NotationTranslator
             toOption.AddAlias("--t");
             toOption.AddAlias("-t");
 
+            var infixArgument = new Argument<string>
+                (name: "infix",
+                 description: "Infix Argument");
+
             //Register the from option with the comman
             var convertCommand = new Command("convert", "Convert notation from one format to another");
  
