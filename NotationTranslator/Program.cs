@@ -6,22 +6,15 @@ namespace NotationTranslator
     {
         static async Task Main(string[] args)
         {
-            var rootCommand = new RootCommand("fixNotation");
-
-            //Need to define commands for translating between notations
-            //Infix to Postfix
-            //Infix to Prefix
-            //Prefix to Postfix
-
-            //Option or Arugment that reverses that Operation
-            //i.e. Postfix to Infix -f ==  Infix to Postfix
+            var rootCommand = new RootCommand("ds2");
+            var convertCommand = new Command("convert", "Convert notation from one format to another");
 
 
 
 
             rootCommand.SetHandler(rootCommand =>
             {
-                Console.WriteLine("fixNotation");
+                Console.WriteLine("A project for DS2");
             });
 
             await rootCommand.InvokeAsync(args);
