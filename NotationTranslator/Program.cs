@@ -1,4 +1,10 @@
 ﻿using System.CommandLine;
+using System.CommandLine.Builder;
+using System.CommandLine.Help;
+using System.CommandLine.Parsing;
+
+
+
 
 namespace NotationTranslator
 {
@@ -8,20 +14,20 @@ namespace NotationTranslator
         {
             //Option for the notation to convert from
             // has default value of infix
-            var fromOption = new Option<string>
+            var fromOption = new Option<Notation>
                 (
                 name: "--from",
-                description: "The notation to convert from",
-                getDefaultValue: () => "infix"
+                description: "C",
+                getDefaultValue: () => Notation.infix
                 );
 
             //Aliases for the from option
             fromOption.AddAlias("--f");
             fromOption.AddAlias("-f");
-
+             
             //Option for the notation to convert to
             // is required
-            var toOption = new Option<string>
+            var toOption = new Option<Notation>
                  (
                  name: "--to",
                  description: "The notation to convert to"
@@ -31,25 +37,43 @@ namespace NotationTranslator
             toOption.AddAlias("--t");
             toOption.AddAlias("-t");
 
-            var infixArgument = new Argument<string>
-                (name: "infix",
-                 description: "Infix Argument");
+            var expressionArg = new Argument<string>(
+                  name: "expression",
+                  description: "The mathematical expression to convert")
+                        {
+                            Arity = ArgumentArity.ExactlyOne
+                        };
 
             //Register the from option with the comman
-            var convertCommand = new Command("convert", "Convert notation from one format to another");
- 
-            convertCommand.AddOption(fromOption);
-            convertCommand.AddOption(toOption);
-
-
-
-            var rootCommand = new RootCommand("ds2");
-            rootCommand.AddCommand(convertCommand);
-
-            rootCommand.SetHandler(rootCommand =>
+            var convertCommand = new Command("convert", "Convert notation from one format to another")
             {
-                Console.WriteLine("A project for DS2");
+                fromOption,
+                toOption,
+                expressionArg
+            };
+
+
+
+            var rootCommand = new RootCommand("Notation Translator")
+            {
+                convertCommand
+            };
+
+            convertCommand.SetHandler((Notation from, Notation to, string expr) =>
+            {
+                Console.WriteLine($"Convert {expr} from {from} to {to}");
+
+            },fromOption, toOption, expressionArg);
+
+            rootCommand.SetHandler(() =>
+            {
+                Console.WriteLine("\nThis is NotationTranslator.");
+                rootCommand.InvokeAsync("--help");
+                Console.WriteLine("\nFor more info about a command use: \nNotationTranslator [command] --h\n");
             });
+
+          
+
 
             await rootCommand.InvokeAsync(args);
         }
