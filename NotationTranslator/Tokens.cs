@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace NotationTranslator
 {
-    internal class Tokens
+    public class Tokens
     {
         public TokenType Type { get; }
         public string Value { get; }
