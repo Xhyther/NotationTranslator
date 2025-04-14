@@ -6,8 +6,14 @@ using System.Threading.Tasks;
 
 namespace NotationTranslator
 {
-    public class Tokenizer
+    public enum TokenType
     {
-
+        TOKEN_Add,
+        TOKEN_Minus,
+        TOKEN_Divide,
+        TOKEN_Multiply,
+        TOKEN_Variable,
+        TOKEN_INT
     }
+
 }

@@ -58,9 +58,8 @@ namespace NotationTranslator
 
             convertCommand.SetHandler((Notation from, Notation to, string expr) =>
             {
-                Console.WriteLine($"Convert {expr} from {from} to {to}");
-                Tokenizer.getArgument(expr);
-                Tokenizer.printArgs();
+                Console.WriteLine($"  Convert {expr} from {from} to {to}");
+               
 
             },fromOption, toOption, expressionArg);
 

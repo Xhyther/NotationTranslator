@@ -6,13 +6,10 @@ using System.Threading.Tasks;
 
 namespace NotationTranslator
 {
-    internal enum Tokens
+    internal class Tokens
     {
-        TOKEN_Add,
-        TOKEN_Minus,
-        TOKEN_Divide,
-        TOKEN_Multiply,
-        TOKEN_Variable,
-        TOKEN_INT
+        public  TokenType tokenType;
+        public  char[] current;
+        public  int counter;
     }
 }
