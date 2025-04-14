@@ -8,12 +8,20 @@ namespace NotationTranslator
 {
     public enum TokenType
     {
-        TOKEN_Add,
-        TOKEN_Minus,
-        TOKEN_Divide,
-        TOKEN_Multiply,
-        TOKEN_Variable,
-        TOKEN_INT
+        Number,
+        Plus,
+        Minus,
+        Multiply,
+        Divide,
+        LeftParen,
+        RightParen,
+        Identifier,
+        Power,
+        Function,
+        Comma,
+        Equals,
+        Whitespace,
+        Unknown
     }
 
 }

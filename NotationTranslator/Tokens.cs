@@ -8,8 +8,15 @@ namespace NotationTranslator
 {
     internal class Tokens
     {
-        public  TokenType tokenType;
-        public  char[] current;
-        public  int counter;
+        public TokenType Type { get; }
+        public string Value { get; }
+
+        public Tokens(TokenType type, string value)
+        {
+            Type = type;
+            Value = value;
+        }
+
+        public override string ToString() => $"{Type}: {Value}";
     }
 }

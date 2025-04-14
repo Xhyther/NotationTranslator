@@ -3,7 +3,6 @@ using System.CommandLine.Parsing;
 
 
 
-
 namespace NotationTranslator
 {
     internal class Program
@@ -56,18 +55,27 @@ namespace NotationTranslator
                 convertCommand
             };
 
+
+        
             convertCommand.SetHandler((Notation from, Notation to, string expr) =>
             {
-                Console.WriteLine($"  Convert {expr} from {from} to {to}");
-               
+                    Console.WriteLine($"  Convert {expr} from {from} to {to}");
 
             },fromOption, toOption, expressionArg);
 
             rootCommand.SetHandler(() =>
             {
-                Console.WriteLine("\nThis is NotationTranslator.");
-                rootCommand.InvokeAsync("--help");
-                Console.WriteLine("\nFor more info about a command use: \nNotationTranslator [command] --h\n");
+                try
+                {
+                    Console.WriteLine("\nThis is NotationTranslator.");
+                    rootCommand.InvokeAsync("--help");
+                    Console.WriteLine("\nFor more info about a command use: \nNotationTranslator [command] --h\n");
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine(ex.Message);
+                }
+               
             });
 
           

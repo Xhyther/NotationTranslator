@@ -9,5 +9,5 @@ namespace NotationTranslator
     public class Tokenizer
     {
 
-    }
+    } 
 }
