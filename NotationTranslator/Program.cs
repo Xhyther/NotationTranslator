@@ -56,7 +56,7 @@ namespace NotationTranslator
             };
 
 
-        
+            //Handles the sub command "convert"s
             convertCommand.SetHandler((Notation from, Notation to, string expr) =>
             {
                 Console.WriteLine($"  Convert {expr} from {from} to {to}");
@@ -68,6 +68,7 @@ namespace NotationTranslator
 
             },fromOption, toOption, expressionArg);
 
+            //set handler for the root command
             rootCommand.SetHandler(() =>
             {
                 try
@@ -83,9 +84,9 @@ namespace NotationTranslator
                
             });
 
-          
 
 
+            //Invoke the command line parser
             await rootCommand.InvokeAsync(args);
         }
     }

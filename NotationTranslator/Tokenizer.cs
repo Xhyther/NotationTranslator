@@ -13,6 +13,7 @@ namespace NotationTranslator
 {
     public class Tokenizer
     {
+        /// Define the token types with TokenType enum and corresponding regex patterns
         private static readonly List<(TokenType Type, string Pattern)> TokenDefinitions = new()
         {
         (TokenType.Whitespace, @"^\s+"),
@@ -30,7 +31,7 @@ namespace NotationTranslator
         };
 
 
-
+        /// Tokenize the input string into a list of tokens
         public static List<Token> Tokenize(string input)
         {
             var tokens = new List<Token>();
