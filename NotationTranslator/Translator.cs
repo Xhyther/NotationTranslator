@@ -153,6 +153,36 @@ namespace NotationTranslator
 
             return new List<Tokens> { stack.Pop() };
         }
+
+
+        public static List<Tokens> ConvertPostfixToInfix(List<Tokens> expression)
+        {
+            var stack = new Stack<Tokens>();
+            for (int i = 0; i < expression.Count(); i++)
+            {
+                if (IsOperand(expression[i]))
+                {
+                    stack.Push(expression[i]);
+                }
+                else if (IsOperator(expression[i]))
+                {
+                    if (stack.Count < 2)
+                    {
+                        throw new InvalidOperationException("Insuffecient operand for expression.");
+                    }
+                    var right = stack.Pop();
+                    var left = stack.Pop();
+                    string newExp = "(" + left.Value + expression[i].Value + right.Value + ")";
+                    stack.Push(new Tokens(TokenType.Identifier, newExp));
+                }
+            }
+
+            if (stack.Count != 1)
+                throw new InvalidOperationException("Invalid postfix expression: leftover operands or incomplete operators.");
+
+
+            return new List<Tokens> { stack.Pop() };
+        }
         public static void Translate(string expression, Notation from, Notation to)
         {
             // Tokenize the input expression
@@ -189,7 +219,11 @@ namespace NotationTranslator
             }
             else if (from == Notation.postfix && to == Notation.infix)
             {
-                //return ConvertPostfixToInfix(tokens);
+                var postToIn = ConvertPostfixToInfix(tokens);
+                foreach (var token in postToIn)
+                {
+                    Console.Write(token.Value + " ");
+                }
             }
             else if (from == Notation.prefix && to == Notation.infix)
             {
