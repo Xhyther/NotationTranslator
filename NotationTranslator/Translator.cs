@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.CommandLine.Parsing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -208,13 +209,37 @@ namespace NotationTranslator
                     stack.Push(new Tokens(TokenType.Identifier, newExp));
                 }
             }
-            //if (stack.Count != 1 )
-            // throw new InvalidOperationException("Invalid prefix expression: leftover operands or incomplete operators.");
+            if (stack.Count != 1 )
+                throw new InvalidOperationException("Invalid prefix expression: leftover operands or incomplete operators.");
 
-            foreach (var item in stack)
+            return new List<Tokens> { stack.Pop() };
+        }
+
+        public static List<Tokens> ConvertPrefixToPostfix(List<Tokens> expression)
+        {
+            var stack = new Stack<Tokens>();
+            for (int i = expression.Count - 1; i >= 0; i--)
             {
-                Console.WriteLine(item);
+                if (IsOperand(expression[i]))
+                {
+                    stack.Push(expression[i]);
+                }
+                else if (IsOperator(expression[i]))
+                {
+                    if (stack.Count < 2)
+                    {
+                        throw new InvalidOperationException("Insuffecient operand for expression.");
+                    }
+                    var left = stack.Pop();
+                    var right = stack.Pop();
+                    string newExp = left.Value + right.Value + expression[i].Value;
+                    stack.Push(new Tokens(TokenType.Identifier, newExp));
+                }
             }
+
+            if (stack.Count != 1)
+                throw new InvalidOperationException("Invalid prefix expression: leftover operands or incomplete operators.");
+
             return new List<Tokens> { stack.Pop() };
         }
 
@@ -270,15 +295,22 @@ namespace NotationTranslator
             }
             else if (from == Notation.prefix && to == Notation.postfix)
             {
-               // return ConvertPrefixToPostfix(tokens);
+                var preToPo = ConvertPrefixToPostfix(tokens);
+                foreach (var token in preToPo)
+                {
+                    Console.Write(token.Value + " ");
+                }
             }
             else if (from == to)
             {
-               // return expression; // No conversion needed
+                foreach (var item in tokens)
+                {
+                    Console.Write(item.Value + " ");
+                }
             }
             else
             {
-               // throw new NotSupportedException($"Conversion from {from} to {to} is not supported.");
+                throw new NotSupportedException($"Conversion from {from} to {to} is not supported.");
             }
             
 
