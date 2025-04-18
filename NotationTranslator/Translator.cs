@@ -154,7 +154,7 @@ namespace NotationTranslator
             return new List<Tokens> { stack.Pop() };
         }
 
-
+      
         public static List<Tokens> ConvertPostfixToInfix(List<Tokens> expression)
         {
             var stack = new Stack<Tokens>();
@@ -183,6 +183,41 @@ namespace NotationTranslator
 
             return new List<Tokens> { stack.Pop() };
         }
+
+
+        public static List<Tokens> ConvertPrefixToInfix(List<Tokens> expression)
+        {
+            var stack = new Stack<Tokens>();
+
+            for (int i = expression.Count - 1; i >=  0; i--)
+            {
+
+                if (IsOperand(expression[i]))
+                {
+                    stack.Push(expression[i]);
+                }
+                else if (IsOperator(expression[i]))
+                {
+                    if (stack.Count < 2)
+                    {
+                        throw new InvalidOperationException("Insuffecient operand for expression.");
+                    }
+                    var left = stack.Pop();
+                    var right = stack.Pop();
+                    string newExp = "(" + left.Value + expression[i].Value + right.Value + ")";
+                    stack.Push(new Tokens(TokenType.Identifier, newExp));
+                }
+            }
+            //if (stack.Count != 1 )
+            // throw new InvalidOperationException("Invalid prefix expression: leftover operands or incomplete operators.");
+
+            foreach (var item in stack)
+            {
+                Console.WriteLine(item);
+            }
+            return new List<Tokens> { stack.Pop() };
+        }
+
         public static void Translate(string expression, Notation from, Notation to)
         {
             // Tokenize the input expression
@@ -227,7 +262,11 @@ namespace NotationTranslator
             }
             else if (from == Notation.prefix && to == Notation.infix)
             {
-                //return ConvertPrefixToInfix(tokens);
+                var preToIn = ConvertPrefixToInfix(tokens);
+                foreach (var token in preToIn)
+                {
+                    Console.Write(token.Value + " ");
+                }
             }
             else if (from == Notation.prefix && to == Notation.postfix)
             {
