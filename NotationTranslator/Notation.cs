@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 namespace NotationTranslator
 {
     //The Notation enum is used to specify the type of notation
-    internal enum Notation
+    public enum Notation
     {
         infix,
         prefix,

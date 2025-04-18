@@ -1,5 +1,6 @@
 ﻿using System.CommandLine;
 using System.CommandLine.Parsing;
+using System.Linq.Expressions;
 
 
 
@@ -60,11 +61,7 @@ namespace NotationTranslator
             convertCommand.SetHandler((Notation from, Notation to, string expr) =>
             {
                 Console.WriteLine($"  Convert {expr} from {from} to {to}");
-                var tokens = Tokenizer.Tokenize(expr);
-                foreach (var token in tokens)
-                {
-                    Console.WriteLine(token);
-                }
+                Translator.Translate(expr, from, to);
 
             },fromOption, toOption, expressionArg);
 

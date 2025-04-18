@@ -32,9 +32,9 @@ namespace NotationTranslator
 
 
         /// Tokenize the input string into a list of tokens
-        public static List<Token> Tokenize(string input)
+        public static List<Tokens> Tokenize(string input)
         {
-            var tokens = new List<Token>();
+            var tokens = new List<Tokens>();
             int index = 0;
 
             while (index < input.Length)
@@ -49,7 +49,7 @@ namespace NotationTranslator
                     if (match.Success)
                     {
                         if (type != TokenType.Whitespace)
-                            tokens.Add(new Token(type,match.Value));
+                            tokens.Add(new Tokens(type,match.Value));
 
                         index += match.Length;
                         matched = true;
@@ -60,7 +60,7 @@ namespace NotationTranslator
                 if (!matched)
                 {
                     // Handle unknown tokens (invalid input)
-                    tokens.Add(new Token(TokenType.Unknown, input[index].ToString()));
+                    tokens.Add(new Tokens(TokenType.Unknown, input[index].ToString()));
                     index++;
                 }
             }
