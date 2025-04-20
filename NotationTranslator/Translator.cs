@@ -248,69 +248,80 @@ namespace NotationTranslator
             // Tokenize the input expression
             var tokens = Tokenizer.Tokenize(expression);
             ConvertInfixToPostfix(tokens);
-
-
-
-            
+      
             // Convert the tokens based on the specified notations
             if (from == Notation.infix && to == Notation.prefix)
             {
                 var inToPre = ConvertInfixToPrefix(tokens);
+                Console.Write($"\t{to}: ");
                 foreach (var token in inToPre)
                 {
                     Console.Write(token.Value + " ");
                 }
+                Console.WriteLine();
             }
             else if (from == Notation.infix && to == Notation.postfix)
             {
                 var inToPo = ConvertInfixToPostfix(tokens);
+                Console.Write($"\t{to}: ");
                 foreach (var token in inToPo)
                 {
                     Console.Write(token.Value + " ");
                 }
+                Console.WriteLine();
             }
             else if (from == Notation.postfix && to == Notation.prefix)
             {
                var postToPre = ConvertPostfixToPrefix(tokens);
+                Console.Write($"\t{to}: ");
                 foreach (var token in postToPre)
                 {
                     Console.Write(token.Value + " ");
                 }
+                Console.WriteLine();
             }
             else if (from == Notation.postfix && to == Notation.infix)
             {
                 var postToIn = ConvertPostfixToInfix(tokens);
+                Console.Write($"\t{to}: ");
                 foreach (var token in postToIn)
                 {
                     Console.Write(token.Value + " ");
                 }
+                Console.WriteLine();
             }
             else if (from == Notation.prefix && to == Notation.infix)
             {
                 var preToIn = ConvertPrefixToInfix(tokens);
+                Console.Write($"\t{to}: ");
                 foreach (var token in preToIn)
                 {
                     Console.Write(token.Value + " ");
                 }
+                Console.WriteLine();
             }
             else if (from == Notation.prefix && to == Notation.postfix)
             {
                 var preToPo = ConvertPrefixToPostfix(tokens);
+                Console.Write($"\t{to}: ");
                 foreach (var token in preToPo)
                 {
                     Console.Write(token.Value + " ");
                 }
+                Console.WriteLine();
             }
             else if (from == to)
             {
+                Console.Write($"\t{to}: ");
                 foreach (var item in tokens)
                 {
                     Console.Write(item.Value + " ");
                 }
+                Console.WriteLine();
             }
             else
             {
-                throw new NotSupportedException($"Conversion from {from} to {to} is not supported.");
+                throw new NotSupportedException($"\tConversion from {from} to {to} is not supported.");
             }
             
 

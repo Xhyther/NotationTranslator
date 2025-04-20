@@ -60,7 +60,8 @@ namespace NotationTranslator
             //Handles the sub command "convert"s
             convertCommand.SetHandler((Notation from, Notation to, string expr) =>
             {
-                Console.WriteLine($"  Convert {expr} from {from} to {to}");
+                Console.WriteLine($"\tConvert {expr} from {from} to {to}");
+                Console.WriteLine($"\t{from}: {expr}");
                 Translator.Translate(expr, from, to);
 
             },fromOption, toOption, expressionArg);
