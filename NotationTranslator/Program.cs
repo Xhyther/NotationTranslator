@@ -2,7 +2,11 @@
 using System.CommandLine.Parsing;
 using System.Linq.Expressions;
 
-
+//Trees
+//Comments
+//Cleanup
+//Readme.md
+//--guide
 
 namespace NotationTranslator
 {
