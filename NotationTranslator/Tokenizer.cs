@@ -1,12 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.CommandLine.Parsing;
-using System.Linq;
-using System.Text;
 using System.Text.RegularExpressions;
-using System.Threading.Tasks;
 
-using Token = NotationTranslator.Tokens;
+
 
 
 namespace NotationTranslator
