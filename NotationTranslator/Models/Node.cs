@@ -12,5 +12,7 @@
             Left = null;
             Right = null;
         }
+
+
     }
 }
