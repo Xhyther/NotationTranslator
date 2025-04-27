@@ -1,6 +1,8 @@
 ﻿using System.Text.RegularExpressions;
+using NotationTranslator.Enums;
+using NotationTranslator.Models;
 
-namespace NotationTranslator
+namespace NotationTranslator.Services
 {
     public class Tokenizer
     {

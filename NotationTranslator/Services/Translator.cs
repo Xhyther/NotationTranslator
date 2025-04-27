@@ -1,4 +1,7 @@
-﻿namespace NotationTranslator
+﻿using NotationTranslator.Enums;
+using NotationTranslator.Models;
+
+namespace NotationTranslator.Services
 {
     //NEED A TREE DSA EQUIVALENT
     public class Translator

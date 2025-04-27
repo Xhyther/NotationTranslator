@@ -1,4 +1,6 @@
-﻿namespace NotationTranslator
+﻿using NotationTranslator.Enums;
+
+namespace NotationTranslator.Models
 {
     //Token class is used to represent a token in the input string
     public class Tokens

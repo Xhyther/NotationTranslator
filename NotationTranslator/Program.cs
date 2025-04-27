@@ -1,5 +1,8 @@
 ﻿using System.CommandLine;
 using System.CommandLine.Parsing;
+using NotationTranslator.Enums;
+using NotationTranslator.Services;
+
 
 
 //Trees

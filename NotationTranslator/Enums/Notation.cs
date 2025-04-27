@@ -1,6 +1,4 @@
-﻿
-
-namespace NotationTranslator
+﻿namespace NotationTranslator.Enums
 {
     //The Notation enum is used to specify the type of notation
     public enum Notation

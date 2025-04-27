@@ -1,5 +1,4 @@
-﻿
-namespace NotationTranslator
+﻿namespace NotationTranslator.Enums
 {
     //The tokens are used to represent the different types of tokens in the input string
     public enum TokenType
