@@ -1,5 +1,4 @@
-﻿
-namespace NotationTranslator
+﻿namespace NotationTranslator
 {
     //NEED A TREE DSA EQUIVALENT
     public class Translator

@@ -1,5 +1,4 @@
-﻿
-namespace NotationTranslator
+﻿namespace NotationTranslator
 {
     //Token class is used to represent a token in the input string
     public class Tokens

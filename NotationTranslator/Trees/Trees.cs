@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace NotationTranslator
+namespace NotationTranslator.Trees
 {
     //A class for parsing the expression into a tree instaed of using a stack
     public class Trees
