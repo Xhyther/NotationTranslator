@@ -13,9 +13,10 @@ namespace NotationTranslator.Services
             if (args.Length == 0)
             {
                PrintHelpMain();
+            
                 return;
             }
-            
+          
         }
 
 
@@ -33,6 +34,27 @@ namespace NotationTranslator.Services
             Console.WriteLine();
             Console.WriteLine("Commands:");
             Console.WriteLine("\tconvert <expression> \t\tConvert Notation from one format to another.");
+            Console.WriteLine();
+        }
+
+
+        public void printHelpConvert()
+        {
+            Console.WriteLine("Description:");
+            Console.WriteLine();
+            Console.WriteLine("\tConvert Notation from one format to another.");
+            Console.WriteLine();
+            Console.WriteLine("Usage:");
+            Console.WriteLine("\tNotationTranslator convert <expression> [options]");
+            Console.WriteLine();
+            Console.WriteLine("Arguments:");
+            Console.WriteLine("\t<expression>  The mathematical expression to convert");
+            Console.WriteLine();
+            Console.WriteLine("Options:");
+            Console.WriteLine("\t-f, --from\t<infix|postfix|prefix>\t(REQUIRED)\tThe notation to convert from.");
+            Console.WriteLine("\t-t, --to\t<infix|postfix|prefix>\t(REQUIRED)\tThe notation to convert to");
+            Console.WriteLine("\t-?, -h, --help\t\t\t\t\t\tShow help and usage information");
+            Console.WriteLine();
         }
     }
 }

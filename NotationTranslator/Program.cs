@@ -78,8 +78,9 @@ namespace NotationTranslator
             {
                 try
                 {
-                    CommandLine cmd = new CommandLine();
-                    cmd.ParseArgs(args);
+                    Console.WriteLine("\nThis is NotationTranslator.");
+                    rootCommand.InvokeAsync("--help");
+                    Console.WriteLine("\nFor more info about a command use: \nNotationTranslator [command] --h\n");
                 }
                 catch (Exception ex)
                 {
