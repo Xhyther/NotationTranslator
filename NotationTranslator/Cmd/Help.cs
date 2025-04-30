@@ -4,23 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace NotationTranslator.Services
+namespace NotationTranslator.Cmd
 {
-    public class CommandLine
+    internal class Help
     {
-        public void ParseArgs(string[] args)
-        {
-            if (args.Length == 0)
-            {
-               PrintHelpMain();
-            
-                return;
-            }
-          
-        }
-
-
-
         public void PrintHelpMain()
         {
             Console.WriteLine("This is Notation Translator. No arguments provided!");
