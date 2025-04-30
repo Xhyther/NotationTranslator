@@ -11,6 +11,9 @@ namespace NotationTranslator.Cmd
         public string Name { get; }
         public string? Alias { get; set; }
         public string description { get; }
+        public bool IsRequired { get; set; } = false;
+        public bool IsFlag { get; set; } = true;
+        public Arguments? Arguments { get; set; }
 
         public Option(string name, string description)
         {
@@ -21,6 +24,24 @@ namespace NotationTranslator.Cmd
         public void AddAlias(string alias)
         {
             Alias = alias;
+        }
+
+        public void AddArgument(Arguments argument)
+        {
+            Arguments = argument;
+        }
+        public void Require()
+        {
+            IsRequired = true;
+        }
+
+        public void SetFlag(bool isFlag)
+        {
+            IsFlag = isFlag;
+            if (isFlag)
+            {
+                Arguments = null;
+            }
         }
     }
 }
