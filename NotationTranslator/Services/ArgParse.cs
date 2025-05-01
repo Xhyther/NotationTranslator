@@ -192,7 +192,7 @@ namespace NotationTranslator.Services
                     break;
 
             }
-
+            Console.ForegroundColor = ConsoleColor.Green;
             switch (to)
             {
                 case Notation.prefix:
@@ -214,6 +214,7 @@ namespace NotationTranslator.Services
                     Console.WriteLine();
                     break;
             }
+            Console.ForegroundColor = ConsoleColor.White;
         }
 
         public void PrintArgs(string Command, List<Option> opt, string exp)

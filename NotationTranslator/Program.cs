@@ -18,7 +18,12 @@ namespace NotationTranslator
             }
             catch (ArgumentException ex)
             {
-                Console.WriteLine($"Argument error: {ex.Message}");
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.WriteLine();
+                Console.WriteLine($"Argument error: {ex.Message}", Console.ForegroundColor);
+                Console.WriteLine("Use \"NotationTranslator --help\" for more information.");
+                Console.WriteLine();
+                Console.ForegroundColor = ConsoleColor.White;
                 Environment.Exit(1);
             }
 
