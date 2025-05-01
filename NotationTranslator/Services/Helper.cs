@@ -84,9 +84,9 @@ namespace NotationTranslator.Services
             Console.WriteLine(new string('-', 50));
             Console.WriteLine("OPTIONS");
             Console.WriteLine(new string('-', 50));
-            Console.WriteLine("  --from, -f   <notation>   REQUIRED   Notation to convert FROM");
-            Console.WriteLine("  --to,   -t   <notation>   REQUIRED   Notation to convert TO");
-            Console.WriteLine("  --help, -h, -?                        Show this help guide");
+            Console.WriteLine("  --from, --f   <notation>   REQUIRED   Notation to convert FROM");
+            Console.WriteLine("  --to,   --t   <notation>   REQUIRED   Notation to convert TO");
+            Console.WriteLine("  --help, --h,                          Show this help guide");
             Console.WriteLine();
 
             Console.WriteLine("Accepted Notation Values:");
