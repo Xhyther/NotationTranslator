@@ -10,13 +10,16 @@ namespace NotationTranslator.Services
 {
     public class ArgParse
     {
-        readonly string[] _args;
-        public bool Isfrom;
-        public bool Istofix;
-        public int OptionCounter;
-        public string? expr;
-        public Notation fromNotation;
-        public Notation toNotation;
+        private readonly string[] _args;
+
+        private bool Isfrom;
+        private bool Istofix;
+
+        private int OptionCounter;
+
+        private string? expr;
+        private Notation fromNotation;
+        private Notation toNotation;
 
         public ArgParse(string[] args)
         {
@@ -31,7 +34,8 @@ namespace NotationTranslator.Services
         {
             if (_args.Length == 0)
             {
-                 throw new ArgumentException("No arguments provided.");
+                Helper.PrintHelpMain();
+                throw new ArgumentException("No arguments provided.");
 
             }
             var Command = _args.Length > 0 ? _args[0] : null;
@@ -39,50 +43,64 @@ namespace NotationTranslator.Services
             if (Command == null)
                 throw new ArgumentException("No command provided.");
 
-
-            var options = new List<Option>();
-            for (int i = 1; i < _args.Length; i++)
+            if (IsValidCommand(Command))
             {
-                try
+                var options = new List<Option>();
+                for (int i = 1; i < _args.Length; i++)
                 {
-                    if (_args[i].StartsWith("--"))
+                    try
                     {
-                        if (i + 1 >= _args.Length)
-                            throw new ArgumentException($"Missing value for option '{_args[i]}'.");
 
-                        if (_args[i + 1].EndsWith('x'))
+                        if (_args[i] == "--help" || _args[i] == "--h")
                         {
-                            options.Add(new Option(_args[i++], GetNotation(_args[i])));
-                            if (Isfrom == false)
-                                Isfrom = FromParseI(options[OptionCounter]);
-                            if (Istofix == false)
-                                Istofix = ToParseI(options[OptionCounter]);
-                            OptionCounter++;
+                            Helper.printHelpConvert();
+                            return;
                         }
+
+                        if (_args[i].StartsWith("--"))
+                        {
+                            if (i + 1 >= _args.Length)
+                                throw new ArgumentException($"Missing value for option '{_args[i]}'.");
+
+                            if (_args[i + 1].EndsWith('x'))
+                            {
+                                options.Add(new Option(_args[i++], GetNotation(_args[i])));
+                                if (Isfrom == false)
+                                    Isfrom = FromParseI(options[OptionCounter]);
+                                if (Istofix == false)
+                                    Istofix = ToParseI(options[OptionCounter]);
+                                OptionCounter++;
+                            }
+                        }
+                        else
+                            expr = _args[i];
+
                     }
-                    else
-                        expr = _args[i];
+                    catch (ArgumentException ex)
+                    {
+                        throw new ArgumentException($"Error parsing option: {ex.Message}");
 
+                    }
                 }
-                catch (ArgumentException ex)
-                {
-                    throw new ArgumentException($"Error parsing option: {ex.Message}");
 
-                }
-            }
+
             
+                ValidOptions();
 
-            if (!IsValidCommand(Command))
+                if (ArgumentExists())
+                    Sethandler(fromNotation, toNotation, expr!);
+                else
+                    throw new ArgumentException("No expression provided.");
+            }
+
+            else if (Command == "--help" || Command == "--h")
+                Helper.PrintHelpMain();
+            else if (Command == "--guide" || Command == "--g")
+                Helper.printGuide();
+            else
                 throw new ArgumentException("Invalid command provided.");
 
-            ValidOptions();
-           
-            if (ArgumentExists())
-                Sethandler(fromNotation, toNotation, expr!);
-            else
-                throw new ArgumentException("No expression provided.");
-           
-            
+
         }
 
 
@@ -122,6 +140,7 @@ namespace NotationTranslator.Services
         {
             toNotation = notation;
         }
+
 
         public void ValidOptions()
         {
