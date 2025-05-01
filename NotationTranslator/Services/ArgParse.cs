@@ -173,60 +173,10 @@ namespace NotationTranslator.Services
 
         public void Sethandler(Notation from, Notation to, string expr)
         {
-            Console.WriteLine();
-            var tokens = Tokenizer.Tokenize(expr);
-            var trees = new Trees();
-
-            var root = new Node();
-            Console.WriteLine($"Original Expression: {expr} of {from} notation");
-            switch (from)
-            {
-                case Notation.prefix:
-                     root = trees.BuildTreeFromPrefix(expr);
-                    break;
-                case Notation.infix:
-                     root = trees.BuildTreeFromInfix(expr);
-                    break;
-                case Notation.postfix:
-                    root = trees.BuildTreeFromPostfix(expr);
-                    break;
-
-            }
-            Console.ForegroundColor = ConsoleColor.Green;
-            switch (to)
-            {
-                case Notation.prefix:
-                    Console.Write("Converted Expression: ");
-                    trees.Preorder(root);
-                    Console.WriteLine($" of {to} notation");
-                    Console.WriteLine();
-                    break;
-                case Notation.infix:
-                    Console.Write("Converted Expression: ");
-                    trees.Inorder(root);
-                    Console.WriteLine($" of {to} notation");
-                    Console.WriteLine();
-                    break;
-                case Notation.postfix:
-                    Console.Write("Converted Expression: ");
-                    trees.Postorder(root);
-                    Console.WriteLine($" of {to} notation");
-                    Console.WriteLine();
-                    break;
-            }
-            Console.ForegroundColor = ConsoleColor.White;
+           Translator translator = new Translator();
+           translator.Translate(expr, from, to);
         }
 
-        public void PrintArgs(string Command, List<Option> opt, string exp)
-        {
-            Console.WriteLine($"Command: {Command}");
-            foreach (var item in opt)
-            {
-                Console.WriteLine(item.ToString());
-            }
-
-            Console.WriteLine($"Argument: {exp}");
-
-        }
+   
     }
 }

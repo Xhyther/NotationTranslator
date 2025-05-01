@@ -2,7 +2,7 @@
 {
     public class Node
     {
-        public char Data { get; set; }
+        public string Data { get; set; }
         public Node? Left { get; set; }
         public Node? Right { get; set; }
 
@@ -13,7 +13,7 @@
             Right = null;
         }
 
-        public Node(char data)
+        public Node(string data)
         {
             Data = data;
             Left = null;

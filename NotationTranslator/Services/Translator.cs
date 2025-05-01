@@ -1,11 +1,13 @@
-﻿ using NotationTranslator.Enums;
+﻿using NotationTranslator.Enums;
 using NotationTranslator.Models;
+using NotationTranslator.Tree;
 
 namespace NotationTranslator.Services
 {
     //NEED A TREE DSA EQUIVALENT
     public class Translator
     {
+        Tokenizer Tokenizer = new Tokenizer();
 
         public static List<Tokens> ReverseBraces(List<Tokens> expression)
         {
@@ -57,273 +59,59 @@ namespace NotationTranslator.Services
             };
         }
 
-        public static List<Tokens> ConvertInfixToPostfix(List<Tokens> expression)
+       
+
+
+
+     private readonly Trees _tree = new Trees();
+
+        public void Translate(string expression, Notation from, Notation to)
         {
-            
-            var operatorStack = new Stack<Tokens>();
-            var output = new List<Tokens>();
+            List<Tokens> tokens = Tokenizer.Tokenize(expression); // Your own method
+            Console.WriteLine();
+            Console.WriteLine($"From ({from}) translating [{expression}] to ({to}).");
 
-
-            int i;
-            for (i = 0; i < expression.Count(); i++)
+            Node? root = from switch
             {
-                if (IsOperand(expression[i]))
-                {
-                    output.Add(expression[i]);
+                Notation.infix => _tree.BuildTreeFromInfix(tokens),
+                Notation.prefix => _tree.BuildTreeFromPrefix(tokens),
+                Notation.postfix => _tree.BuildTreeFromPostfix(tokens),
+                _ => throw new InvalidOperationException("Unsupported notation")
+            };
 
-                }
-                else if (expression[i].Type == TokenType.LeftParen)
-                    operatorStack.Push(expression[i]);
-                else if (expression[i].Type == TokenType.RightParen)
-                {
-                    while (operatorStack.Count > 0 && operatorStack.Peek().Type != TokenType.LeftParen)
-                    {
-                        output.Add(operatorStack.Pop());
-
-                    }
-                    if (operatorStack.Count > 0 && operatorStack.Peek().Type == TokenType.LeftParen)
-                        operatorStack.Pop();
-                    // discard left parenthesis
-
-                }
-                else
-                {
-                    while (operatorStack.Count > 0 && Precedence(expression[i]) <= Precedence(operatorStack.Peek()))
-                    {
-                        output.Add(operatorStack.Pop());
-                    }
-                    operatorStack.Push(expression[i]);
-                }
-            }
-
-            while (operatorStack.Count > 0)
+            Console.ForegroundColor = ConsoleColor.Cyan;
+            switch (to)
             {
-                output.Add(operatorStack.Pop());
-            }
-           
+                case Notation.infix:
+                    // Convert to infix
+                    Console.Write("Coverted expression to Infix: ");
+                    _tree.Inorder(root); // Will print the equivalent infix expression
+                    Console.WriteLine();
+                    break;
+                case Notation.prefix:
+                    // Convert to prefix
+                    Console.Write("Coverted expression to Prefix: ");
+                    _tree.Preorder(root);
+                    Console.WriteLine();
+                    break;
+                case Notation.postfix:
+                    // Convert to postfix
 
-            return output;
-            
-        }
+                    Console.Write("Coverted expression to Postfix: ");
+                    _tree.Postorder(root);
+                    Console.WriteLine();
 
-        public static List<Tokens> ConvertInfixToPrefix(List<Tokens> expression)
-        {
-            // Reverse the expression
-            var reversedExpression = Reverse(expression);
-            // Reverse the parentheses
-            var reversedBraces = ReverseBraces(reversedExpression);
-            // Convert to postfix
-            var postfix = ConvertInfixToPostfix(reversedBraces);
-            // Reverse the postfix expression to get prefix
-            var prefix = Reverse(postfix);
-            return prefix;
-        }
-
-        public static List<Tokens> ConvertPostfixToPrefix(List<Tokens> expression)
-        {
-            var stack = new Stack<Tokens>();
-
-            for (int i = 0; i < expression.Count(); i++)
-            {
-                if (IsOperand(expression[i]))
-                {
-                    stack.Push(expression[i]);
-                }
-                else if (IsOperator(expression[i]))
-                {
-                    if(stack.Count < 2)
-                    {
-                        throw new InvalidOperationException("Insuffecient operand for expression.");
-                    }
-                    var right = stack.Pop();
-                    var left = stack.Pop();
-                    string newExp = expression[i].Value + left.Value + right.Value;
-
-                    stack.Push(new Tokens(TokenType.Identifier, newExp));
-
-                }
+                    break;
 
             }
-
-            if (stack.Count != 1)
-                throw new InvalidOperationException("Invalid postfix expression: leftover operands or incomplete operators.");
-
-
-            return new List<Tokens> { stack.Pop() };
-        }
-
-      
-        public static List<Tokens> ConvertPostfixToInfix(List<Tokens> expression)
-        {
-            var stack = new Stack<Tokens>();
-            for (int i = 0; i < expression.Count(); i++)
-            {
-                if (IsOperand(expression[i]))
-                {
-                    stack.Push(expression[i]);
-                }
-                else if (IsOperator(expression[i]))
-                {
-                    if (stack.Count < 2)
-                    {
-                        throw new InvalidOperationException("Insuffecient operand for expression.");
-                    }
-                    var right = stack.Pop();
-                    var left = stack.Pop();
-                    string newExp = "(" + left.Value + expression[i].Value + right.Value + ")";
-                    stack.Push(new Tokens(TokenType.Identifier, newExp));
-                }
-            }
-
-            if (stack.Count != 1)
-                throw new InvalidOperationException("Invalid postfix expression: leftover operands or incomplete operators.");
-
-
-            return new List<Tokens> { stack.Pop() };
+            Console.ForegroundColor = ConsoleColor.White;
         }
 
 
-        public static List<Tokens> ConvertPrefixToInfix(List<Tokens> expression)
-        {
-            var stack = new Stack<Tokens>();
+       
 
-            for (int i = expression.Count - 1; i >=  0; i--)
-            {
+  
 
-                if (IsOperand(expression[i]))
-                {
-                    stack.Push(expression[i]);
-                }
-                else if (IsOperator(expression[i]))
-                {
-                    if (stack.Count < 2)
-                    {
-                        throw new InvalidOperationException("Insuffecient operand for expression.");
-                    }
-                    var left = stack.Pop();
-                    var right = stack.Pop();
-                    string newExp = "(" + left.Value + expression[i].Value + right.Value + ")";
-                    stack.Push(new Tokens(TokenType.Identifier, newExp));
-                }
-            }
-            if (stack.Count != 1 )
-                throw new InvalidOperationException("Invalid prefix expression: leftover operands or incomplete operators.");
 
-            return new List<Tokens> { stack.Pop() };
-        }
-
-        public static List<Tokens> ConvertPrefixToPostfix(List<Tokens> expression)
-        {
-            var stack = new Stack<Tokens>();
-            for (int i = expression.Count - 1; i >= 0; i--)
-            {
-                if (IsOperand(expression[i]))
-                {
-                    stack.Push(expression[i]);
-                }
-                else if (IsOperator(expression[i]))
-                {
-                    if (stack.Count < 2)
-                    {
-                        throw new InvalidOperationException("Insuffecient operand for expression.");
-                    }
-                    var left = stack.Pop();
-                    var right = stack.Pop();
-                    string newExp = left.Value + right.Value + expression[i].Value;
-                    stack.Push(new Tokens(TokenType.Identifier, newExp));
-                }
-            }
-
-            if (stack.Count != 1)
-                throw new InvalidOperationException("Invalid prefix expression: leftover operands or incomplete operators.");
-
-            return new List<Tokens> { stack.Pop() };
-        }
-
-        public static void Translate(string expression, Notation from, Notation to)
-        {
-            // Tokenize the input expression
-            var tokens = Tokenizer.Tokenize(expression);
-            ConvertInfixToPostfix(tokens);
-      
-            // Convert the tokens based on the specified notations
-            if (from == Notation.infix && to == Notation.prefix)
-            {
-                var inToPre = ConvertInfixToPrefix(tokens);
-                Console.Write($"\t{to}: ");
-                foreach (var token in inToPre)
-                {
-                    Console.Write(token.Value + " ");
-                }
-                Console.WriteLine();
-            }
-            else if (from == Notation.infix && to == Notation.postfix)
-            {
-                var inToPo = ConvertInfixToPostfix(tokens);
-                Console.Write($"\t{to}: ");
-                foreach (var token in inToPo)
-                {
-                    Console.Write(token.Value + " ");
-                }
-                Console.WriteLine();
-            }
-            else if (from == Notation.postfix && to == Notation.prefix)
-            {
-               var postToPre = ConvertPostfixToPrefix(tokens);
-                Console.Write($"\t{to}: ");
-                foreach (var token in postToPre)
-                {
-                    Console.Write(token.Value + " ");
-                }
-                Console.WriteLine();
-            }
-            else if (from == Notation.postfix && to == Notation.infix)
-            {
-                var postToIn = ConvertPostfixToInfix(tokens);
-                Console.Write($"\t{to}: ");
-                foreach (var token in postToIn)
-                {
-                    Console.Write(token.Value + " ");
-                }
-                Console.WriteLine();
-            }
-            else if (from == Notation.prefix && to == Notation.infix)
-            {
-                var preToIn = ConvertPrefixToInfix(tokens);
-                Console.Write($"\t{to}: ");
-                foreach (var token in preToIn)
-                {
-                    Console.Write(token.Value + " ");
-                }
-                Console.WriteLine();
-            }
-            else if (from == Notation.prefix && to == Notation.postfix)
-            {
-                var preToPo = ConvertPrefixToPostfix(tokens);
-                Console.Write($"\t{to}: ");
-                foreach (var token in preToPo)
-                {
-                    Console.Write(token.Value + " ");
-                }
-                Console.WriteLine();
-            }
-            else if (from == to)
-            {
-                Console.Write($"\t{to}: ");
-                foreach (var item in tokens)
-                {
-                    Console.Write(item.Value + " ");
-                }
-                Console.WriteLine();
-            }
-            else
-            {
-                throw new NotSupportedException($"\tConversion from {from} to {to} is not supported.");
-            }
-            
-
-        }
-
-        
     }
 }

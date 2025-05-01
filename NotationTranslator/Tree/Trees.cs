@@ -1,30 +1,26 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using NotationTranslator.Models;
+﻿using NotationTranslator.Models;
+using NotationTranslator.Enums;
+using NotationTranslator.Services;
 
 namespace NotationTranslator.Tree
 {
-    //A class for parsing the expression into a tree instaed of using a stack
     public class Trees
     {
-        public Node BuildTreeFromPostfix(string expression)
+        public Node BuildTreeFromPostfix(List<Tokens> expression)
         {
             Stack<Node> stack = new Stack<Node>();
 
-            foreach (char c in expression)
+            foreach (var token in expression)
             {
-                if (char.IsLetterOrDigit(c)) // Operand
+                if (Translator.IsOperand(token))
                 {
-                    stack.Push(new Node(c));
+                    stack.Push(new Node(token.Value));
                 }
-                else // Operator
+                else if (Translator.IsOperator(token))
                 {
-                    Node right = stack.Pop();
-                    Node left = stack.Pop();
-                    Node newNode = new Node(c)
+                    var right = stack.Pop();
+                    var left = stack.Pop();
+                    Node newNode = new Node(token.Value)
                     {
                         Left = left,
                         Right = right
@@ -33,27 +29,26 @@ namespace NotationTranslator.Tree
                 }
             }
 
-            return stack.Pop(); // Root of the tree
+            return stack.Pop();
         }
 
-
-        public Node BuildTreeFromPrefix(string expression)
+        public Node BuildTreeFromPrefix(List<Tokens> expression)
         {
             Stack<Node> stack = new Stack<Node>();
 
-            for (int i = expression.Length - 1; i >= 0; i--)
+            for (int i = expression.Count - 1; i >= 0; i--)
             {
-                char c = expression[i];
+                var token = expression[i];
 
-                if (char.IsLetterOrDigit(c)) // Operand
+                if (Translator.IsOperand(token))
                 {
-                    stack.Push(new Node(c));
+                    stack.Push(new Node(token.Value));
                 }
-                else // Operator
+                else if (Translator.IsOperator(token))
                 {
-                    Node left = stack.Pop();
-                    Node right = stack.Pop();
-                    Node newNode = new Node(c)
+                    var left = stack.Pop();
+                    var right = stack.Pop();
+                    Node newNode = new Node(token.Value)
                     {
                         Left = left,
                         Right = right
@@ -62,43 +57,41 @@ namespace NotationTranslator.Tree
                 }
             }
 
-            return stack.Pop(); // Root of the tree
+            return stack.Pop();
         }
 
-
-        public Node BuildTreeFromInfix(string expression)
+        public Node BuildTreeFromInfix(List<Tokens> expression)
         {
             Stack<Node> operands = new Stack<Node>();
-            Stack<char> operators = new Stack<char>();
+            Stack<Tokens> operators = new Stack<Tokens>();
 
-            foreach (char c in expression)
+            foreach (var token in expression)
             {
-                if (c == ' ')
-                    continue;
-
-                if (c == '(')
+                if (token.Type == TokenType.LeftParen)
                 {
-                    operators.Push(c);
+                    operators.Push(token);
                 }
-                else if (char.IsLetterOrDigit(c))
+                else if (Translator.IsOperand(token))
                 {
-                    operands.Push(new Node(c));
+                    operands.Push(new Node(token.Value));
                 }
-                else if (c == ')')
+                else if (token.Type == TokenType.RightParen)
                 {
-                    while (operators.Peek() != '(')
+                    while (operators.Peek().Type != TokenType.LeftParen)
                     {
                         ProcessOperator(operators, operands);
                     }
-                    operators.Pop(); // Pop '('
+                    operators.Pop();
                 }
-                else // Operator (+, -, *, /)
+                else if (Translator.IsOperator(token))
                 {
-                    while (operators.Count > 0 && Precedence(operators.Peek()) >= Precedence(c))
+                    while (operators.Count > 0 &&
+                           Translator.IsOperator(operators.Peek()) &&
+                           Translator.Precedence(operators.Peek()) >= Translator.Precedence(token))
                     {
                         ProcessOperator(operators, operands);
                     }
-                    operators.Push(c);
+                    operators.Push(token);
                 }
             }
 
@@ -107,15 +100,15 @@ namespace NotationTranslator.Tree
                 ProcessOperator(operators, operands);
             }
 
-            return operands.Pop(); // Root
+            return operands.Pop();
         }
 
-        private void ProcessOperator(Stack<char> operators, Stack<Node> operands)
+        private void ProcessOperator(Stack<Tokens> operators, Stack<Node> operands)
         {
-            char op = operators.Pop();
-            Node right = operands.Pop();
-            Node left = operands.Pop();
-            Node newNode = new Node(op)
+            var op = operators.Pop();
+            var right = operands.Pop();
+            var left = operands.Pop();
+            Node newNode = new Node(op.Value)
             {
                 Left = left,
                 Right = right
@@ -123,35 +116,23 @@ namespace NotationTranslator.Tree
             operands.Push(newNode);
         }
 
-        private int Precedence(char op)
-        {
-            if (op == '+' || op == '-') return 1;
-            if (op == '*' || op == '/') return 2;
-            return 0;
-        }
-
-
+        // Traversals
         public void Inorder(Node? node)
         {
-            if (node == null)
-                return;
+            if (node == null) return;
 
-            bool isOperator = !char.IsLetterOrDigit(node.Data);
+            bool isOperator = !char.IsLetterOrDigit(node.Data[0]);
 
-            if (isOperator) Console.Write("("); // Optional: add '(' before left subtree
-
+            if (isOperator) Console.Write("(");
             Inorder(node.Left);
             Console.Write(node.Data);
             Inorder(node.Right);
-
-            if (isOperator) Console.Write(")"); // Optional: add ')' after right subtree
+            if (isOperator) Console.Write(")");
         }
 
         public void Preorder(Node? node)
         {
-            if (node == null)
-                return;
-
+            if (node == null) return;
             Console.Write(node.Data);
             Preorder(node.Left);
             Preorder(node.Right);
@@ -159,14 +140,10 @@ namespace NotationTranslator.Tree
 
         public void Postorder(Node? node)
         {
-            if (node == null)
-                return;
-
+            if (node == null) return;
             Postorder(node.Left);
             Postorder(node.Right);
             Console.Write(node.Data);
         }
-
-
     }
 }

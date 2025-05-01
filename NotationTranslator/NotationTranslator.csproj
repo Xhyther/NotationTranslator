@@ -6,6 +6,7 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <PackAsTool>true</PackAsTool>
     <Nullable>enable</Nullable>
+	<ToolCommandName>notation-translator</ToolCommandName>
   </PropertyGroup>
 
 </Project>

@@ -13,6 +13,7 @@ namespace NotationTranslator
             {
                 ArgParse Parser = new ArgParse(args);
                 Parser.Parse();
+
                 Console.WriteLine();
 
             }
