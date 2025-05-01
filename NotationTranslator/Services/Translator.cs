@@ -1,4 +1,4 @@
-﻿using NotationTranslator.Enums;
+﻿ using NotationTranslator.Enums;
 using NotationTranslator.Models;
 
 namespace NotationTranslator.Services
