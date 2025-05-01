@@ -1,98 +1,60 @@
-﻿using System.CommandLine;
-using System.CommandLine.Parsing;
+﻿using NotationTranslator.Cmd;
 using NotationTranslator.Enums;
 using NotationTranslator.Services;
 
 
-
-//Trees
-//Comments
-//Cleanup
-//Readme.md
-//--guide
-
 namespace NotationTranslator
 {
-    internal class Program
+    public class Program
     {
         static async Task Main(string[] args)
         {
-            //Option for the notation to convert from
-            // has default value of infix
-            var fromOption = new Option<Notation>
-                (
+           var RootCommand = new Command
+            (   "NotationTranslaor", 
+                "The Root Command of the CLI Application"
+            );
+
+
+            var ConvertCommand = new Subcommand
+            (
+                "convert",
+                "Convert notation from one format to another"
+            );
+
+            var Argument = new Arguments
+            (
+                name: "expression",
+                description: "The mathematical expression to convert"
+            );
+
+            Argument.Require();
+
+
+            var fromOption = new Option
+            (
                 name: "--from",
-                description: "C"
-                ){IsRequired = true};
+                description: "The notation to convert from"
+            );
 
-            //Aliases for the from option
             fromOption.AddAlias("--f");
-            fromOption.AddAlias("-f");
-             
-            //Option for the notation to convert to
-            // is required
-            var toOption = new Option<Notation>
-                 (
-                 name: "--to",
-                 description: "The notation to convert to"
-                 ){IsRequired = true};
+            fromOption.Require();
+            fromOption.SetType(typeof(Notation));
 
-            //Aliases for the to option
+            var toOption = new Option
+            (
+                name: "--to",
+                description: "The notation to convert to"
+            );
             toOption.AddAlias("--t");
-            toOption.AddAlias("-t");
+            toOption.Require();
+            toOption.SetType(typeof(Notation));
 
-            var expressionArg = new Argument<string>(
-                  name: "expression",
-                  description: "The mathematical expression to convert")
-                        {
-                            Arity = ArgumentArity.ExactlyOne
-                        };
+            ConvertCommand.AddArgument(Argument);
+            ConvertCommand.AddOption(fromOption);
+            ConvertCommand.AddOption(toOption);
+            RootCommand.AddSubcommand(ConvertCommand);
 
-            //Register the from option with the comman
-            var convertCommand = new Command("convert", "Convert notation from one format to another")
-            {
-                fromOption,
-                toOption,
-                expressionArg
-            };
-
-
-            //The rootCommand
-            var rootCommand = new RootCommand("Notation Translator")
-            {
-                convertCommand
-            };
-
-
-            //Handles the sub command "convert"s
-            convertCommand.SetHandler((Notation from, Notation to, string expr) =>
-            {
-                Console.WriteLine($"\tConvert {expr} from {from} to {to}");
-                Console.WriteLine($"\t{from}: {expr}");
-                Translator.Translate(expr, from, to);
-
-            },fromOption, toOption, expressionArg);
-
-            //set handler for the root command
-            rootCommand.SetHandler(() =>
-            {
-                try
-                {
-                    Console.WriteLine("\nThis is NotationTranslator.");
-                    rootCommand.InvokeAsync("--help");
-                    Console.WriteLine("\nFor more info about a command use: \nNotationTranslator [command] --h\n");
-                }
-                catch (Exception ex)
-                {
-                    Console.WriteLine(ex.Message);
-                }
-               
-            });
-
-
-
-            //Invoke the command line parser
-            await rootCommand.InvokeAsync(args);
+           
         }
     }
 }

@@ -8,16 +8,24 @@ namespace NotationTranslator.Cmd
 {
     public class Arguments
     {
-        public string value { get; }
+        public string Name { get; }
+        public string? Value { get; set; }
+        public string Description { get; set; }
         public bool IsRequired { get; set; } = false;
-        public Arguments(string value)
+        public Arguments(string name, string description)
         {
-            this.value = value;
+            Name = name;
+            Description = description;
         }
 
         public void Require()
         {
             IsRequired = true;
+        }
+
+        public void SetValue(string value)
+        {
+            Value = value;
         }
     }
 }

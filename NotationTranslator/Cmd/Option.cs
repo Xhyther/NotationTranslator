@@ -11,6 +11,7 @@ namespace NotationTranslator.Cmd
         public string Name { get; }
         public string? Alias { get; set; }
         public string description { get; }
+        public Type? Type { get; set; } = null;
         public bool IsRequired { get; set; } = false;
         public bool IsFlag { get; set; } = true;
         public Arguments? Arguments { get; set; }
@@ -41,6 +42,15 @@ namespace NotationTranslator.Cmd
             if (isFlag)
             {
                 Arguments = null;
+            }
+        }
+
+        public void SetType(Type type)
+        {
+            Type = type;
+            if (type != null)
+            {
+                IsFlag = false;
             }
         }
     }
