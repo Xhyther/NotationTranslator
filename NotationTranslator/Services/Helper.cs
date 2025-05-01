@@ -10,39 +10,48 @@ namespace NotationTranslator.Services
     {
         public static void PrintHelpMain()
         {
-            Console.WriteLine("This is Notation Translator. No arguments provided!");
+            Console.WriteLine("Notation Translator CLI");
             Console.WriteLine();
-            Console.WriteLine("Usage: NotationTranslator [commands] [options]");
+            Console.WriteLine("Basic Syntax:");
+            Console.WriteLine("  NotationTranslator <command> [options] <expression>");
             Console.WriteLine();
-            Console.WriteLine("Options:");
-            Console.WriteLine("\t--version \t\tShow version information.");
-            Console.WriteLine("\t--g --guide \t\tShow a detailed guide on how to use this tool.");
-            Console.WriteLine("\t--? --h, --help \t\tShow this help message and usage information.");
+            Console.WriteLine("Available Commands:");
+            Console.WriteLine("  convert       Convert a mathematical expression between notations.");
             Console.WriteLine();
-            Console.WriteLine("Commands:");
-            Console.WriteLine("\tconvert <expression> \t\tConvert Notation from one format to another.");
+            Console.WriteLine("Global Options:");
+            Console.WriteLine("  --g, --guide           Show a detailed user guide.");
+            Console.WriteLine("  --h, --help            Show this help message.");
+            Console.WriteLine();
+            Console.WriteLine("Use \"NotationTranslator <command> --help\" for more information on a specific command.");
             Console.WriteLine();
         }
+
 
 
         public static void printHelpConvert()
         {
-            Console.WriteLine("Description:");
+            Console.WriteLine("Command: convert");
             Console.WriteLine();
-            Console.WriteLine("\tConvert Notation from one format to another.");
+            Console.WriteLine("Description:");
+            Console.WriteLine("  Converts a mathematical expression from one notation to another.");
             Console.WriteLine();
             Console.WriteLine("Usage:");
-            Console.WriteLine("\tNotationTranslator convert [options]  <expression>");
+            Console.WriteLine("  NotationTranslator convert [options] <expression>");
             Console.WriteLine();
             Console.WriteLine("Arguments:");
-            Console.WriteLine("\t<expression>  The mathematical expression to convert");
+            Console.WriteLine("  <expression>           The mathematical expression to convert.");
             Console.WriteLine();
             Console.WriteLine("Options:");
-            Console.WriteLine("\t--f, --from\t<infix|postfix|prefix>\t(REQUIRED)\tThe notation to convert from.");
-            Console.WriteLine("\t--t, --to\t<infix|postfix|prefix>\t(REQUIRED)\tThe notation to convert to");
-            Console.WriteLine("\t--?, --h, --help\t\t\t\t\t\tShow help and usage information");
+            Console.WriteLine("  --f, --from <notation>   (REQUIRED) The input notation: infix, postfix, or prefix.");
+            Console.WriteLine("  --t, --to   <notation>   (REQUIRED) The output notation: infix, postfix, or prefix.");
+            Console.WriteLine("  --h, --help                         Show help information for this command.");
+            Console.WriteLine();
+            Console.WriteLine("Examples:");
+            Console.WriteLine("  dotnet run convert --from infix --to postfix \"a + b * c\"");
+            Console.WriteLine("  dotnet run convert --from prefix --to infix \"+ a * b c\"");
             Console.WriteLine();
         }
+
 
 
         public static void printGuide()
