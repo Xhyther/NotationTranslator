@@ -10,7 +10,8 @@ namespace NotationTranslator.Cmd
     {
         public string Name { get; }
         public string Description { get; }
-        public List<Subcommand> Subcommands {get; } = new();
+        public List<Command> Subcommands {get; } = new();
+        public List<Option> Options { get; } = new();
         public Arguments? Arguments { get; set; }
 
         public Func<Dictionary<string, string>, Task>? Handler { get; private set; }
@@ -21,9 +22,14 @@ namespace NotationTranslator.Cmd
             Description = description;
         }
 
-        public void AddSubcommand(Subcommand subcommand)
+        public void AddSubcommand(Command subcommand)
         {
             Subcommands.Add(subcommand);
+        }
+
+        public void AddOption(Option option)
+        {
+            Options.Add(option);
         }
 
         public void AddArgument(Arguments argument)
