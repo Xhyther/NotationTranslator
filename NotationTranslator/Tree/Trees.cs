@@ -4,6 +4,10 @@ using NotationTranslator.Services;
 
 namespace NotationTranslator.Tree
 {
+    // This Tree class is responsible for building and traversing a binary expression tree.
+    // It provides methods to build the tree from postfix, prefix, and infix expressions.
+    // It also provides methods for inorder, preorder, and postorder traversals of the tree.
+
     public class Trees
     {
         public Node BuildTreeFromPostfix(List<Tokens> expression)

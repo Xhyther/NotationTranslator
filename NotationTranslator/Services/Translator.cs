@@ -4,11 +4,14 @@ using NotationTranslator.Tree;
 
 namespace NotationTranslator.Services
 {
-    //NEED A TREE DSA EQUIVALENT
+    /// The Translator class is responsible for converting between different notations (infix, prefix, postfix).
+    /// It uses a binary expression tree to parse the expression and transform it into the desired notation.
+    /// Within this class, methods are provided to reverse braces, check operator precedence, and determine if a token is an operator or operand.
     public class Translator
     {
-        Tokenizer Tokenizer = new Tokenizer();
+        Tokenizer Tokenizer = new Tokenizer(); 
 
+        /// Reverse the braces in the expression
         public static List<Tokens> ReverseBraces(List<Tokens> expression)
         {
             for (int i = 0; i < expression.Count; i++)
@@ -24,6 +27,7 @@ namespace NotationTranslator.Services
             return expression;
         }
 
+        /// Reverse the order of the tokens in the expression
         public static List<Tokens> Reverse(List<Tokens> expression)
         {
             var myStack = new Stack<Tokens>(expression);
@@ -31,6 +35,7 @@ namespace NotationTranslator.Services
             return reversedExpression;
         }
 
+        /// Check if the token is an operator
         public static bool IsOperator(Tokens token)
         {
             return token.Type == TokenType.Plus ||
@@ -39,13 +44,14 @@ namespace NotationTranslator.Services
                    token.Type == TokenType.Divide ||
                    token.Type == TokenType.Power;
         }
-
+        /// Check if the token is an operand
         public static bool IsOperand(Tokens token)
         {
             return token.Type == TokenType.Number ||
                    token.Type == TokenType.Identifier;
         }
 
+        //Check the Precedence of an operator
         public static int Precedence(Tokens token)
         {
             return token.Type switch
@@ -65,6 +71,8 @@ namespace NotationTranslator.Services
 
      private readonly Trees _tree = new Trees();
 
+
+        /// Translate the expression from one notation to another
         public void Translate(string expression, Notation from, Notation to)
         {
             List<Tokens> tokens = Tokenizer.Tokenize(expression); // Your own method

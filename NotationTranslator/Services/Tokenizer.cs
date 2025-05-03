@@ -4,6 +4,8 @@ using NotationTranslator.Models;
 
 namespace NotationTranslator.Services
 {
+    /// The Tokenizer class is responsible for tokenizing the input string into a list of tokens.
+    
     public class Tokenizer
     {
         /// Define the token types with TokenType enum and corresponding regex patterns

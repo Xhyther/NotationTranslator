@@ -4,20 +4,23 @@ using NotationTranslator.Models;
 
 namespace NotationTranslator.Services
 {
+    /// The ArgParse class is responsible for parsing command line arguments and options.
+    // It validates the input, checks for required options, and sets the appropriate values for conversion.
+    /// It also handles the conversion process by calling the Translator class.
     public class ArgParse
     {
-        private readonly string[] _args;
+        private readonly string[] _args; // The command line arguments passed to the program
 
-        private bool Isfrom;
-        private bool Istofix;
+        private bool Isfrom; // Indicates if the 'from' option has been set
+        private bool Istofix; // Indicates if the 'to' option has been set
 
-        private int OptionCounter;
+        private int OptionCounter; // Counter for the number of options provided
 
-        private string? expr;
-        private Notation fromNotation;
-        private Notation toNotation;
+        private string? expr; // The expression to be converted
+        private Notation fromNotation; // The input notation
+        private Notation toNotation; // The output notation
 
-        public ArgParse(string[] args)
+        public ArgParse(string[] args) // Constructor to initialize the ArgParse object with command line arguments
         {
             _args = args;
             Isfrom = false;
@@ -26,9 +29,9 @@ namespace NotationTranslator.Services
         }
 
 
-        public void Parse()
+        public void Parse() // Method to parse the command line arguments
         {
-            if (_args.Length == 0)
+            if (_args.Length == 0) //
             {
                 Helper.PrintHelpMain();
                 throw new ArgumentException("No arguments provided.");
@@ -99,7 +102,7 @@ namespace NotationTranslator.Services
 
         }
 
-
+        //Helper Methods
         public bool IsValidCommand(string command)
         {
             return command == "convert";
@@ -171,6 +174,7 @@ namespace NotationTranslator.Services
         }
 
 
+        // The Sethandler method is responsible for calling the Translator class to perform the conversion.
         public void Sethandler(Notation from, Notation to, string expr)
         {
            Translator translator = new Translator();

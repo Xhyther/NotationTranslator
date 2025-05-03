@@ -1,6 +1,7 @@
 ﻿
 namespace NotationTranslator.Services
 {
+    /// Helper class provides methods to print help information and a user guide for the Notation Translator CLI.
     public static class Helper
     {
         public static void PrintHelpMain()
