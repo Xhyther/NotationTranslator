@@ -32,35 +32,43 @@ namespace NotationTranslator.Services
             var tokens = new List<Tokens>();
             int index = 0;
 
-            while (index < input.Length)
+            try
             {
-                bool matched = false;
-
-                foreach (var (type, pattern) in TokenDefinitions)
+                while (index < input.Length)
                 {
-                    var regex = new Regex(pattern);
-                    var match = regex.Match(input.Substring(index));
+                    bool matched = false;
 
-                    if (match.Success)
+                    foreach (var (type, pattern) in TokenDefinitions)
                     {
-                        if (type != TokenType.Whitespace)
-                            tokens.Add(new Tokens(type,match.Value));
+                        var regex = new Regex(pattern);
+                        var match = regex.Match(input.Substring(index));
 
-                        index += match.Length;
-                        matched = true;
-                        break;
+                        if (match.Success)
+                        {
+                            if (type != TokenType.Whitespace)
+                                tokens.Add(new Tokens(type, match.Value));
+
+                            index += match.Length;
+                            matched = true;
+                            break;
+                        }
+                    }
+
+                    if (!matched)
+                    {
+                        // Handle unknown tokens (invalid input)
+                        tokens.Add(new Tokens(TokenType.Unknown, input[index].ToString()));
+                        index++;
                     }
                 }
 
-                if (!matched)
-                {
-                    // Handle unknown tokens (invalid input)
-                    tokens.Add(new Tokens(TokenType.Unknown, input[index].ToString()));
-                    index++;
-                }
+                return tokens;
             }
-
-            return tokens;
+            catch (Exception ex)
+            {
+                // Handle any exceptions that occur during tokenization
+                throw new ArgumentException($"Error during tokenization: {ex.Message}");
+            }
         }
 
     } 

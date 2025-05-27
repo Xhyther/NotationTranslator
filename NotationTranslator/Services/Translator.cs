@@ -75,46 +75,54 @@ namespace NotationTranslator.Services
         /// Translate the expression from one notation to another
         public void Translate(string expression, Notation from, Notation to)
         {
-            List<Tokens> tokens = Tokenizer.Tokenize(expression); // Your own method
-            Console.WriteLine();
-            Console.WriteLine($"From ({from}) translating [{expression}] to ({to}).");
-
-            Node? root = from switch
+            try
             {
-                Notation.infix => _tree.BuildTreeFromInfix(tokens),
-                Notation.prefix => _tree.BuildTreeFromPrefix(tokens),
-                Notation.postfix => _tree.BuildTreeFromPostfix(tokens),
-                _ => throw new InvalidOperationException("Unsupported notation")
-            };
+                List<Tokens> tokens = Tokenizer.Tokenize(expression); // Your own method
+                Console.WriteLine();
+                Console.WriteLine($"From ({from}) translating [{expression}] to ({to}).");
 
-            Console.ForegroundColor = ConsoleColor.Cyan;
-            switch (to)
-            {
-                case Notation.infix:
-                    // Convert to infix
-                    Console.Write("Coverted expression to Infix: ");
-                    _tree.Inorder(root); // Will print the equivalent infix expression
-                    Console.WriteLine();
-                    break;
-                case Notation.prefix:
-                    // Convert to prefix
-                    Console.Write("Coverted expression to Prefix: ");
-                    _tree.Preorder(root);
-                    Console.WriteLine();
-                    break;
-                case Notation.postfix:
-                    // Convert to postfix
+                Node? root = from switch
+                {
+                    Notation.infix => _tree.BuildTreeFromInfix(tokens),
+                    Notation.prefix => _tree.BuildTreeFromPrefix(tokens),
+                    Notation.postfix => _tree.BuildTreeFromPostfix(tokens),
+                    _ => throw new InvalidOperationException("Unsupported notation")
+                };
 
-                    Console.Write("Coverted expression to Postfix: ");
-                    _tree.Postorder(root);
-                    Console.WriteLine();
+                Console.ForegroundColor = ConsoleColor.Cyan;
+                switch (to)
+                {
+                    case Notation.infix:
+                        // Convert to infix
+                        Console.Write("Coverted expression to Infix: ");
+                        _tree.Inorder(root); // Will print the equivalent infix expression
+                        Console.WriteLine();
+                        break;
+                    case Notation.prefix:
+                        // Convert to prefix
+                        Console.Write("Coverted expression to Prefix: ");
+                        _tree.Preorder(root);
+                        Console.WriteLine();
+                        break;
+                    case Notation.postfix:
+                        // Convert to postfix
 
-                    break;
+                        Console.Write("Coverted expression to Postfix: ");
+                        _tree.Postorder(root);
+                        Console.WriteLine();
 
+                        break;
+
+                }
+                Console.ForegroundColor = ConsoleColor.White;
             }
-            Console.ForegroundColor = ConsoleColor.White;
-        }
+            catch (Exception ex)
+            {
+                Console.ForegroundColor = ConsoleColor.Red;
+                throw new ArgumentException($"Error: {ex.Message}.\nPossible Reason: Invalid input notation.");
+            }
 
+        }
 
        
 
